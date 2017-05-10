@@ -1,0 +1,20 @@
+{
+  "name": "elastic-filebeat-kibana",
+  "version": "1.0.0",
+  "description": "Quick setup of elasticsearch, filebeat and kibana using docker compose",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker-compose up --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carantes/elasticFilebeatKibana.git"
+  },
+  "keywords": ["elasticsearch", "filebeat", "kibana"],
+  "author": "Carlos Eduardo Arantes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carantes/elasticFilebeatKibana/issues"
+  },
+  "homepage": "https://github.com/carantes/elasticFilebeatKibana#readme"
+}
