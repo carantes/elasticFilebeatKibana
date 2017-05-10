@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+  filebeat:
+    image: prima/filebeat
+    volumes:
+      - ./filebeat/config/filebeat.yml:/filebeat.yml
+      - ./filebeat/config/filebeat.template.json:/filebeat.template.json
+      - ./filebeat/config/filebeat.template-es2x.json:/filebeat.template-es2x.json
+      - datavolume:/var/log
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+  kibana:
+    build: kibana/
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+  app:
+    build: app/
+    volumes:
+      - datavolume:/usr/src/app/logs
+    ports:
+      - "8090:8090"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+      - filebeat
+
+networks:
+  elk:
+    driver: bridge
+
+volumes:
+  datavolume: {}
